@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: Machine Manage
+  data:
+    mongodb:
+      uri: mongodb://localhost:27018/machine_manage
+server:
+  port: 8090
+domain:
+  domain-node-id: domain01
+  domain-node-secret: domain01Secret
+  parent-entry-point: ws://localhost:8080/master
+manage:
+  root-node-id: ROOT
+  root-node-secret: ROOT
+  root-api-url: http://localhost:8080/api
