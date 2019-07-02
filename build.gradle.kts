@@ -20,15 +20,16 @@ dependencies {
     implementation(project(":exchange"))
     implementation(project(":repository-spring"))
     implementation(project(":master-spring"))
+    implementation(project(":machine-model"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("io.reactivex.rxjava2:rxjava:2.2.9")
     implementation("io.reactivex.rxjava2:rxkotlin:2.3.0")
     implementation("com.squareup.okhttp3:okhttp:3.14.2")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation(kotlin("stdlib-jdk8"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
