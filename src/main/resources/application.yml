@@ -7,7 +7,9 @@ spring:
 server:
   port: 8090
 domain:
+  domain-name: Domain 01
   domain-node-id: domain01
+  domain-node-class-id: domain01class
   domain-node-secret: domain01Secret
   parent-entry-point: ws://localhost:8080/master
 manage:

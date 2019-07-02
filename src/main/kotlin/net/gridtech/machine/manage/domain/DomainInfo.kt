@@ -28,19 +28,21 @@ interface HostInfoRepository : MongoRepository<HostInfo, String> {
 @Service
 @ConfigurationProperties(prefix = "domain")
 class DomainInfoService {
-    var domainNodeId: String? = null
-    var domainNodeSecret: String? = null
-    var parentEntryPoint: String? = null
+    lateinit var domainName: String
+    lateinit var domainNodeClassId: String
+    lateinit var domainNodeId: String
+    lateinit var domainNodeSecret: String
+    lateinit var parentEntryPoint: String
 
     @Autowired
     lateinit var repository: HostInfoRepository
 
     @PostConstruct
     fun initInfo() {
-        if (hostInfo == null && domainNodeId != null && domainNodeSecret != null) {
+        if (hostInfo == null) {
             hostInfo = HostInfo(
-                    nodeId = domainNodeId!!,
-                    nodeSecret = domainNodeSecret!!,
+                    nodeId = domainNodeId,
+                    nodeSecret = domainNodeSecret,
                     parentEntryPoint = parentEntryPoint
             )
         }

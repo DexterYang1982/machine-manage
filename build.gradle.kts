@@ -16,6 +16,7 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     implementation(project(":exchange"))
     implementation(project(":repository-spring"))
     implementation(project(":master-spring"))
