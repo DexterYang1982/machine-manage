@@ -4,22 +4,17 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 
-abstract class A(){
-    val D="".apply { println("D") }
-    init {
-        println("A")
-    }
-}
-class B:A(){
-    val C="".apply { println("C") }
-    init {
-        println("B")
-    }
-}
-
 fun main(args: Array<String>) {
-    B()
+    var a=Observable.just(1, 2, 3)
+            .filter {
+                println(it)
+                it == 2
+            }
+            .firstElement().toObservable().publish()
+    a.subscribe {  println("S1") }
+    a.subscribe {  println("S2") }
 
+    a.connect()
 
 //    val p = PublishSubject.create<Int>()
 //    val x=Observable.concat(
