@@ -3,6 +3,7 @@ package net.gridtech.machine.manage.domain
 import net.gridtech.core.Bootstrap
 import net.gridtech.core.data.IHostInfo
 import net.gridtech.core.util.hostInfoPublisher
+import net.gridtech.machine.model.DataHolder
 import net.gridtech.master.HostMaster
 import net.gridtech.repository.data.FieldDao
 import net.gridtech.repository.data.FieldValueDao
@@ -25,11 +26,12 @@ class BootService {
     lateinit var fieldValueDao: FieldValueDao
     @Autowired
     lateinit var domainInfoService: DomainInfoService
+    @Autowired
+    lateinit var rootManagerService: RootManagerService
 
     lateinit var bootstrap: Bootstrap
-
     lateinit var hostMaster: HostMaster
-
+    lateinit var dataHolder: DataHolder
 
     @PostConstruct
     fun start() {
@@ -42,6 +44,7 @@ class BootService {
                 fieldValueDao
         )
         hostMaster = HostMaster(bootstrap)
+        dataHolder = DataHolder(bootstrap, domainInfoService.domainNodeId, rootManagerService)
     }
 
     private fun hostInfoChanged(hostInfo: IHostInfo) {

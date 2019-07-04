@@ -104,9 +104,10 @@ class RootManagerService : IManager {
                     "alias" to alias))
 
 
-    fun nodeClassDelete(id: String) =
-            httpDelete("nodeClassDelete",
-                    "id" to id)
+    override fun nodeClassDelete(id: String) {
+        httpDelete("nodeClassDelete",
+                "id" to id)
+    }
 
     fun fieldDelete(id: String) =
             httpDelete("fieldDelete",
