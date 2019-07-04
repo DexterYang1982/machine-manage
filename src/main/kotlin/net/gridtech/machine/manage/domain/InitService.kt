@@ -12,15 +12,15 @@ class InitService {
     @Autowired
     lateinit var domainInfoService: DomainInfoService
     @Autowired
-    lateinit var rootManageService: RootManageService
+    lateinit var rootManagerService: RootManagerService
 
     fun initialize(): Boolean {
         val domainNodeClass = try {
-            rootManageService.nodeClassGetById(domainInfoService.domainNodeClassId)
+            rootManagerService.nodeClassGetById(domainInfoService.domainNodeClassId)
         } catch (e: APIException) {
             if (e.code == APIExceptionEnum.ERR01_ID_NOT_EXIST.name) {
                 try {
-                    rootManageService.nodeClassAdd(
+                    rootManagerService.nodeClassAdd(
                             domainInfoService.domainNodeClassId,
                             "${domainInfoService.domainName} node class",
                             "",
@@ -37,17 +37,18 @@ class InitService {
         }
         val domainNode = domainNodeClass?.let {
             try {
-                rootManageService.nodeGetById(domainInfoService.domainNodeId)
+                rootManagerService.nodeGetById(domainInfoService.domainNodeId)
             } catch (e: APIException) {
                 if (e.code == APIExceptionEnum.ERR01_ID_NOT_EXIST.name) {
                     try {
-                        rootManageService.nodeAdd(
+                        rootManagerService.nodeAdd(
                                 domainInfoService.domainNodeId,
                                 domainInfoService.domainName,
                                 "",
                                 it.id,
                                 ID_NODE_ROOT,
                                 emptyList(),
+                                listOf(domainInfoService.domainNodeId),
                                 emptyList())
                     } catch (e: Throwable) {
                         e.printStackTrace()
@@ -61,7 +62,7 @@ class InitService {
         }
         val secret = domainNode?.let {
             try {
-                rootManageService.fieldValueGetByFieldKey(KEY_FIELD_SECRET, it.id)
+                rootManagerService.fieldValueGetByFieldKey(KEY_FIELD_SECRET, it.id)
             } catch (e: Throwable) {
                 e.printStackTrace()
                 null
@@ -69,7 +70,7 @@ class InitService {
         }
         secret?.takeIf { it.value != domainInfoService.domainNodeSecret }?.apply {
             try {
-                rootManageService.fieldValueSetByFieldKey(KEY_FIELD_SECRET, domainNode.id, "", domainInfoService.domainNodeSecret)
+                rootManagerService.fieldValueSetByFieldKey(KEY_FIELD_SECRET, domainNode.id, "", domainInfoService.domainNodeSecret)
             } catch (e: Throwable) {
                 e.printStackTrace()
             }

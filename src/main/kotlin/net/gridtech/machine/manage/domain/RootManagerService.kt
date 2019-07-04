@@ -2,10 +2,7 @@ package net.gridtech.machine.manage.domain
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import net.gridtech.core.data.FieldStub
-import net.gridtech.core.data.FieldValueStub
-import net.gridtech.core.data.NodeClassStub
-import net.gridtech.core.data.NodeStub
+import net.gridtech.core.data.*
 import net.gridtech.core.util.parse
 import net.gridtech.core.util.stringfy
 import net.gridtech.exception.APIException
@@ -17,7 +14,7 @@ import java.net.URL
 
 @Service
 @ConfigurationProperties(prefix = "manage")
-class RootManageService {
+class RootManagerService : IManager {
     lateinit var rootNodeId: String
     lateinit var rootNodeSecret: String
     lateinit var rootApiUrl: String
@@ -32,12 +29,12 @@ class RootManageService {
     fun nodeGetById(nodeId: String): NodeStub =
             parse(httpGet("nodeGetById", "id" to nodeId))
 
-    fun nodeClassAdd(id: String,
-                     name: String,
-                     alias: String,
-                     connectable: Boolean,
-                     tags: List<String>,
-                     description: Any? = null): NodeClassStub =
+    override fun nodeClassAdd(id: String,
+                              name: String,
+                              alias: String,
+                              connectable: Boolean,
+                              tags: List<String>,
+                              description: Any?): NodeClassStub =
             parse(httpPost("nodeClassAdd", description,
                     "id" to id,
                     "name" to name,
@@ -65,7 +62,8 @@ class RootManageService {
                 alias: String,
                 nodeClassId: String,
                 parentId: String,
-                externalScope: List<String>,
+                externalNodeIdScope: List<String>,
+                externalNodeClassTagScope: List<String>,
                 tags: List<String>,
                 description: Any? = null): NodeStub =
             parse(httpPost("nodeAdd", description,
@@ -74,13 +72,14 @@ class RootManageService {
                     "alias" to alias,
                     "nodeClassId" to nodeClassId,
                     "parentId" to parentId,
-                    "externalScope" to externalScope,
+                    "externalNodeIdScope" to externalNodeIdScope,
+                    "externalNodeClassTagScope" to externalNodeClassTagScope,
                     "tags" to tags))
 
-    fun nodeClassUpdate(id: String,
-                        name: String,
-                        alias: String,
-                        description: Any? = null): NodeClassStub =
+    override fun nodeClassUpdate(id: String,
+                                 name: String,
+                                 alias: String,
+                                 description: Any?): NodeClassStub =
             parse(httpPut("nodeClassUpdate", description,
                     "id" to id,
                     "name" to name,
