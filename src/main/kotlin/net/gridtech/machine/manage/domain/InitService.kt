@@ -1,9 +1,9 @@
 package net.gridtech.machine.manage.domain
 
+import net.gridtech.core.util.APIException
+import net.gridtech.core.util.APIExceptionEnum
 import net.gridtech.core.util.ID_NODE_ROOT
 import net.gridtech.core.util.KEY_FIELD_SECRET
-import net.gridtech.exception.APIException
-import net.gridtech.exception.APIExceptionEnum
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -70,7 +70,7 @@ class InitService {
         }
         secret?.takeIf { it.value != domainInfoService.domainNodeSecret }?.apply {
             try {
-                rootManagerService.fieldValueSetByFieldKey(KEY_FIELD_SECRET, domainNode.id, "", domainInfoService.domainNodeSecret)
+                rootManagerService.fieldValueUpdateByFieldKey(KEY_FIELD_SECRET, domainNode.id, "", domainInfoService.domainNodeSecret)
             } catch (e: Throwable) {
                 e.printStackTrace()
             }

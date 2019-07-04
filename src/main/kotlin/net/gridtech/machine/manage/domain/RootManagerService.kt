@@ -3,10 +3,10 @@ package net.gridtech.machine.manage.domain
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import net.gridtech.core.data.*
+import net.gridtech.core.util.APIException
+import net.gridtech.core.util.APIExceptionEnum
 import net.gridtech.core.util.parse
 import net.gridtech.core.util.stringfy
-import net.gridtech.exception.APIException
-import net.gridtech.exception.APIExceptionEnum
 import okhttp3.*
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Service
@@ -42,13 +42,13 @@ class RootManagerService : IManager {
                     "connectable" to connectable,
                     "tags" to tags))
 
-    fun fieldAdd(key: String,
-                 name: String,
-                 alias: String,
-                 nodeClassId: String,
-                 through: Boolean,
-                 tags: List<String>,
-                 description: Any? = null): FieldStub =
+    override fun fieldAdd(key: String,
+                          name: String,
+                          alias: String,
+                          nodeClassId: String,
+                          through: Boolean,
+                          tags: List<String>,
+                          description: Any?): FieldStub =
             parse(httpPost("fieldAdd", description,
                     "key" to key,
                     "name" to name,
@@ -57,15 +57,15 @@ class RootManagerService : IManager {
                     "through" to through,
                     "tags" to tags))
 
-    fun nodeAdd(id: String,
-                name: String,
-                alias: String,
-                nodeClassId: String,
-                parentId: String,
-                externalNodeIdScope: List<String>,
-                externalNodeClassTagScope: List<String>,
-                tags: List<String>,
-                description: Any? = null): NodeStub =
+    override fun nodeAdd(id: String,
+                         name: String,
+                         alias: String,
+                         nodeClassId: String,
+                         parentId: String,
+                         externalNodeIdScope: List<String>,
+                         externalNodeClassTagScope: List<String>,
+                         tags: List<String>,
+                         description: Any?): NodeStub =
             parse(httpPost("nodeAdd", description,
                     "id" to id,
                     "name" to name,
@@ -85,19 +85,19 @@ class RootManagerService : IManager {
                     "name" to name,
                     "alias" to alias))
 
-    fun fieldUpdate(id: String,
-                    name: String,
-                    alias: String,
-                    description: Any? = null): FieldStub =
+    override fun fieldUpdate(id: String,
+                             name: String,
+                             alias: String,
+                             description: Any?): FieldStub =
             parse(httpPut("fieldUpdate", description,
                     "id" to id,
                     "name" to name,
                     "alias" to alias))
 
-    fun nodeUpdate(id: String,
-                   name: String,
-                   alias: String,
-                   description: Any? = null): NodeStub =
+    override fun nodeUpdate(id: String,
+                            name: String,
+                            alias: String,
+                            description: Any?): NodeStub =
             parse(httpPut("nodeUpdate", description,
                     "id" to id,
                     "name" to name,
@@ -109,26 +109,36 @@ class RootManagerService : IManager {
                 "id" to id)
     }
 
-    fun fieldDelete(id: String) =
-            httpDelete("fieldDelete",
-                    "id" to id)
+    override fun fieldDelete(id: String) {
+        httpDelete("fieldDelete",
+                "id" to id)
+    }
 
-    fun nodeDelete(id: String) =
-            httpDelete("nodeDelete",
-                    "id" to id)
+    override fun nodeDelete(id: String) {
+        httpDelete("nodeDelete",
+                "id" to id)
+    }
 
     fun fieldValueGetByFieldKey(fieldKey: String, nodeId: String): FieldValueStub =
             parse(httpGet("fieldValueGetByFieldKey", "fieldKey" to fieldKey, "nodeId" to nodeId))
 
-    fun fieldValueSetByFieldKey(fieldKey: String,
-                                nodeId: String,
-                                session: String,
-                                value: String) =
-            httpPost("fieldValueSetByFieldKey", value,
-                    "nodeId" to nodeId,
-                    "fieldKey" to fieldKey,
-                    "session" to session)
+    override fun fieldValueUpdateByFieldKey(fieldKey: String,
+                                            nodeId: String,
+                                            session: String,
+                                            value: Any) {
+        httpPost("fieldValueUpdateByFieldKey", value,
+                "nodeId" to nodeId,
+                "fieldKey" to fieldKey,
+                "session" to session)
+    }
 
+    override fun fieldValueUpdate(nodeId: String, fieldId: String,
+                                  session: String, value: Any) {
+        httpPost("fieldValueUpdate", value,
+                "nodeId" to nodeId,
+                "fieldId" to fieldId,
+                "session" to session)
+    }
 
     private fun httpPost(method: String, body: Any?, vararg queries: Pair<String, Any?>): String {
         val url = getHttpUrl(rootApiUrl, method, *queries)

@@ -1,7 +1,7 @@
 package net.gridtech.machine.manage.domain
 
+import net.gridtech.core.util.APIException
 import net.gridtech.core.util.stringfy
-import net.gridtech.exception.APIException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
