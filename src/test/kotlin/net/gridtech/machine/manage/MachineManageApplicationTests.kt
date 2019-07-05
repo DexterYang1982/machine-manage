@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
 
     a.connect()
 
-//    val p = PublishSubject.create<Int>()
+//    val p = PublishSubject.add<Int>()
 //    val x=Observable.concat(
 //            Observable.just(8,9,10),
 //            p

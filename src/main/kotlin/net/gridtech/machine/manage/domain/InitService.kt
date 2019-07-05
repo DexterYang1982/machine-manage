@@ -20,6 +20,7 @@ class InitService {
         } catch (e: APIException) {
             if (e.code == APIExceptionEnum.ERR01_ID_NOT_EXIST.name) {
                 try {
+                    println("====> create new node class for domain")
                     rootManagerService.nodeClassAdd(
                             domainInfoService.domainNodeClassId,
                             "${domainInfoService.domainName} node class",
@@ -41,6 +42,7 @@ class InitService {
             } catch (e: APIException) {
                 if (e.code == APIExceptionEnum.ERR01_ID_NOT_EXIST.name) {
                     try {
+                        println("====> create new node for domain")
                         rootManagerService.nodeAdd(
                                 domainInfoService.domainNodeId,
                                 domainInfoService.domainName,
@@ -70,6 +72,7 @@ class InitService {
         }
         secret?.takeIf { it.value != domainInfoService.domainNodeSecret }?.apply {
             try {
+                println("====> reset domain node secret to config value")
                 rootManagerService.fieldValueUpdateByFieldKey(KEY_FIELD_SECRET, domainNode.id, "", domainInfoService.domainNodeSecret)
             } catch (e: Throwable) {
                 e.printStackTrace()
