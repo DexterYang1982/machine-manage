@@ -2,7 +2,7 @@ package net.gridtech.machine.manage.controller
 
 import net.gridtech.machine.manage.domain.BootService
 import net.gridtech.machine.model.entityField.CustomField
-import net.gridtech.machine.model.property.ValueDescription
+import net.gridtech.machine.model.property.field.ValueDescription
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -22,7 +22,7 @@ class CustomFieldController {
             name: String,
             @RequestParam("alias")
             alias: String): ResponseEntity<*> =
-            ResponseEntity.ok(CustomField.add(nodeClassId, name, alias))
+            ResponseEntity.ok(CustomField.addNew(nodeClassId, name, alias) ?: "failed")
 
 
     @RequestMapping(value = ["/delete"], method = [RequestMethod.DELETE])
@@ -38,7 +38,7 @@ class CustomFieldController {
                             @RequestBody
                             valueDescription: ValueDescription): ResponseEntity<*> {
         bootService.dataHolder.entityFieldHolder[id]?.let { if (it is CustomField) it else null }?.apply {
-            valueDescriptionProperty.addValueDescription(valueDescription)
+            description.addValueDescription(valueDescription)
         }
         return ResponseEntity.ok("ok")
     }
@@ -49,7 +49,7 @@ class CustomFieldController {
                                @RequestBody
                                valueDescription: ValueDescription): ResponseEntity<*> {
         bootService.dataHolder.entityFieldHolder[id]?.let { if (it is CustomField) it else null }?.apply {
-            valueDescriptionProperty.updateValueDescription(valueDescription)
+            description.updateValueDescription(valueDescription)
         }
         return ResponseEntity.ok("ok")
     }
@@ -60,7 +60,7 @@ class CustomFieldController {
                                @RequestParam("valueDescriptionId")
                                valueDescriptionId: String): ResponseEntity<*> {
         bootService.dataHolder.entityFieldHolder[id]?.let { if (it is CustomField) it else null }?.apply {
-            valueDescriptionProperty.deleteValueDescription(valueDescriptionId)
+            description.deleteValueDescription(valueDescriptionId)
         }
         return ResponseEntity.ok("ok")
     }

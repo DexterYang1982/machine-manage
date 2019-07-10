@@ -1,6 +1,7 @@
 package net.gridtech.machine.manage.controller.entity
 
 import net.gridtech.core.data.INode
+import net.gridtech.core.util.generateId
 import net.gridtech.machine.model.entity.Machine
 import net.gridtech.machine.model.entityClass.MachineClass
 import org.springframework.http.MediaType
@@ -14,7 +15,7 @@ class MachineController : EntityController() {
     override fun addEntity(entityClassId: String, parentId: String, name: String, alias: String): INode? =
             bootService.dataHolder.entityClassHolder[entityClassId]?.let { entityClass ->
                 if (entityClass is MachineClass)
-                    Machine.add(entityClass, bootService.domainInfoService.domainNodeId, name, alias)
+                    Machine(generateId(), entityClass).addNew(parentId, name, alias)
                 else
                     null
             }
