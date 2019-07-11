@@ -40,7 +40,7 @@ abstract class EntityController {
     @RequestMapping(value = ["/delete"], method = [RequestMethod.DELETE])
     fun delete(@RequestParam("id")
                id: String): ResponseEntity<*> {
-        bootService.dataHolder.entityHolder[id]?.delete()
+        bootService.dataHolder.entityHolder[id]?.tryToDelete()
         return ResponseEntity.ok("ok")
     }
 }

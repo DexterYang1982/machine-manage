@@ -1,4 +1,4 @@
-package net.gridtech.machine.manage.controller
+package net.gridtech.machine.manage.controller.entityField
 
 import net.gridtech.machine.manage.domain.BootService
 import net.gridtech.machine.model.entityField.CustomField
@@ -28,7 +28,7 @@ class CustomFieldController {
     @RequestMapping(value = ["/delete"], method = [RequestMethod.DELETE])
     fun delete(@RequestParam("id")
                id: String): ResponseEntity<*> {
-        bootService.dataHolder.entityFieldHolder[id]?.delete()
+        bootService.dataHolder.entityFieldHolder[id]?.tryToDelete()
         return ResponseEntity.ok("ok")
     }
 

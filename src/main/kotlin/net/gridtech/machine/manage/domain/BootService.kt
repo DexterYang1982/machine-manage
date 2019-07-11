@@ -44,10 +44,7 @@ class BootService {
                 fieldValueDao
         )
         hostMaster = HostMaster(bootstrap)
-        dataHolder = DataHolder(bootstrap,
-                domainInfoService.domainNodeId,
-                domainInfoService.domainNodeClassId,
-                rootManagerService)
+        dataHolder = DataHolder(bootstrap, rootManagerService)
     }
 
     private fun hostInfoChanged(hostInfo: IHostInfo) {

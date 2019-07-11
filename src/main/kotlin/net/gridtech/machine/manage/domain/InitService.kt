@@ -4,6 +4,8 @@ import net.gridtech.core.util.APIException
 import net.gridtech.core.util.APIExceptionEnum
 import net.gridtech.core.util.ID_NODE_ROOT
 import net.gridtech.core.util.KEY_FIELD_SECRET
+import net.gridtech.machine.model.entity.Domain
+import net.gridtech.machine.model.entityClass.DomainClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -26,7 +28,7 @@ class InitService {
                             "${domainInfoService.domainName} node class",
                             "",
                             true,
-                            emptyList())
+                            DomainClass.tags)
                 } catch (e: Throwable) {
                     e.printStackTrace()
                     null
@@ -51,7 +53,7 @@ class InitService {
                                 ID_NODE_ROOT,
                                 emptyList(),
                                 listOf(domainInfoService.domainNodeId),
-                                emptyList())
+                                Domain.tags)
                     } catch (e: Throwable) {
                         e.printStackTrace()
                         null
