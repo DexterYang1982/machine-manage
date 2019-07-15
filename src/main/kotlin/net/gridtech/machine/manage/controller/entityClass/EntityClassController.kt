@@ -14,15 +14,15 @@ abstract class EntityClassController {
 
     abstract fun addEntityClass(name: String, alias: String): INodeClass?
 
-    @RequestMapping(value = ["/add"], method = [RequestMethod.GET])
+    @RequestMapping(value = ["/add"], method = [RequestMethod.POST])
     fun add(@RequestParam("name")
             name: String,
             @RequestParam("alias")
             alias: String): ResponseEntity<*> =
             ResponseEntity.ok(addEntityClass(name, alias) ?: "error")
 
-    @RequestMapping(value = ["/updateNameAndAlias"], method = [RequestMethod.PUT])
-    fun updateNameAndAlias(
+    @RequestMapping(value = ["/update"], method = [RequestMethod.PUT])
+    fun update(
             @RequestParam("id")
             id: String,
             @RequestParam("name")

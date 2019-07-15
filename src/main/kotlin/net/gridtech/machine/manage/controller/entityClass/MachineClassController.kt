@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping(value = ["/api/machineClass"], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(value = ["/api/MachineClass"], produces = [MediaType.APPLICATION_JSON_VALUE])
 class MachineClassController : EntityClassController() {
     override fun addEntityClass(name: String, alias: String): INodeClass? =
             MachineClass(generateId()).let {

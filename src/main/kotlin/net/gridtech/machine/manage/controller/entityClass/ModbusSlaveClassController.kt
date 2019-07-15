@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping(value = ["/api/modbusSlaveClass"], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(value = ["/api/ModbusSlaveClass"], produces = [MediaType.APPLICATION_JSON_VALUE])
 class ModbusSlaveClassController : EntityClassController() {
     override fun addEntityClass(name: String, alias: String): INodeClass? =
             ModbusSlaveClass(generateId()).let {

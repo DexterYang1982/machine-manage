@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping(value = ["/api/modbusUnitClass"], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(value = ["/api/ModbusUnitClass"], produces = [MediaType.APPLICATION_JSON_VALUE])
 class ModbusUnitClassController : EntityClassController() {
     override fun addEntityClass(name: String, alias: String): INodeClass? =
             ModbusUnitClass(generateId()).let {
