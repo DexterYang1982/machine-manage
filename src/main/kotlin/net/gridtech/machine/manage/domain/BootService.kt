@@ -48,6 +48,7 @@ class BootService {
     }
 
     private fun hostInfoChanged(hostInfo: IHostInfo) {
+        dataHolder.domainNodeInfo=hostInfo
         if (domainInfoService.hostInfo != hostInfo) {
             domainInfoService.hostInfo = hostInfo
         }

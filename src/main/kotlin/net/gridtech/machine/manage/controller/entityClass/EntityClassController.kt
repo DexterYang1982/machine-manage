@@ -1,6 +1,7 @@
 package net.gridtech.machine.manage.controller.entityClass
 
 import net.gridtech.core.data.INodeClass
+import net.gridtech.machine.manage.controller.result
 import net.gridtech.machine.manage.domain.BootService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -19,7 +20,7 @@ abstract class EntityClassController {
             name: String,
             @RequestParam("alias")
             alias: String): ResponseEntity<*> =
-            ResponseEntity.ok(addEntityClass(name, alias) ?: "error")
+            result(addEntityClass(name, alias))
 
     @RequestMapping(value = ["/update"], method = [RequestMethod.PUT])
     fun update(
@@ -28,15 +29,11 @@ abstract class EntityClassController {
             @RequestParam("name")
             name: String,
             @RequestParam("alias")
-            alias: String): ResponseEntity<*> {
-        bootService.dataHolder.entityClassHolder[id]?.updateNameAndAlias(name, alias)
-        return ResponseEntity.ok("ok")
-    }
+            alias: String): ResponseEntity<*> =
+            result(bootService.dataHolder.entityClassHolder[id]?.updateNameAndAlias(name, alias))
 
     @RequestMapping(value = ["/delete"], method = [RequestMethod.DELETE])
     fun delete(@RequestParam("id")
-               id: String): ResponseEntity<*> {
-        bootService.dataHolder.entityClassHolder[id]?.tryToDelete()
-        return ResponseEntity.ok("ok")
-    }
+               id: String): ResponseEntity<*> =
+            result(bootService.dataHolder.entityClassHolder[id]?.tryToDelete())
 }

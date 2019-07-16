@@ -17,7 +17,7 @@ class CrossDomainRequestFilter : Filter {
         val response = res as HttpServletResponse
         val request = req as HttpServletRequest
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, nodeId, nodeSecret")
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"))
         if ("OPTIONS".equals(request.method, ignoreCase = true)) {
             response.status = HttpServletResponse.SC_OK
