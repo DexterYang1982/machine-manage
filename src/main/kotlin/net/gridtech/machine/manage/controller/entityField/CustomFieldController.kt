@@ -22,8 +22,10 @@ class CustomFieldController {
             @RequestParam("name")
             name: String,
             @RequestParam("alias")
-            alias: String): ResponseEntity<*> =
-            result(CustomField.addNew(nodeClassId, name, alias))
+            alias: String,
+            @RequestParam("output")
+            output: Boolean): ResponseEntity<*> =
+            result(CustomField.addNew(nodeClassId, name, alias, output))
 
     @RequestMapping(value = ["/update"], method = [RequestMethod.PUT])
     fun update(@RequestParam("id")

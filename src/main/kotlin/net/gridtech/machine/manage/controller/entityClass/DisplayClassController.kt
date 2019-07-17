@@ -1,11 +1,14 @@
 package net.gridtech.machine.manage.controller.entityClass
 
 import net.gridtech.core.data.INodeClass
+import net.gridtech.core.util.cast
 import net.gridtech.core.util.generateId
+import net.gridtech.machine.manage.controller.result
 import net.gridtech.machine.model.entityClass.DisplayClass
+import net.gridtech.machine.model.property.entityClass.DisplayClientVersion
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -16,4 +19,11 @@ class DisplayClassController : EntityClassController() {
                 it.initialize(null)
                 it.addNew(name, alias)
             }
+
+    @RequestMapping(value = ["/updateDisplayClientVersion"], method = [RequestMethod.PUT])
+    fun updateDisplayClientVersion(@RequestParam("id")
+                                   id: String,
+                                   @RequestBody
+                                   displayClientVersion: DisplayClientVersion): ResponseEntity<*> =
+            result(bootService.dataHolder.entityClassHolder[id]?.let { cast<DisplayClass>(it) }?.description?.updateDisplayClientVersion(displayClientVersion))
 }
