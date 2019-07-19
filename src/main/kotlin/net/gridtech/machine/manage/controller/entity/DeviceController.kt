@@ -4,6 +4,7 @@ import net.gridtech.core.data.INode
 import net.gridtech.core.util.cast
 import net.gridtech.core.util.generateId
 import net.gridtech.machine.manage.controller.result
+import net.gridtech.machine.model.ReadCondition
 import net.gridtech.machine.model.entity.Device
 import net.gridtech.machine.model.entityClass.DeviceClass
 import net.gridtech.machine.model.property.entity.DeviceProcess
@@ -93,5 +94,12 @@ class DeviceController : EntityController() {
                       @RequestParam("processId")
                       processId: String): ResponseEntity<*> =
             result(bootService.dataHolder.entityHolder[id]?.let { cast<Device>(it) }?.description?.deleteProcess(processId))
+
+    @RequestMapping(value = ["/updateErrorCondition"], method = [RequestMethod.PUT])
+    fun updateErrorCondition(@RequestParam("id")
+                             id: String,
+                             @RequestBody
+                             errorCondition: ReadCondition): ResponseEntity<*> =
+            result(bootService.dataHolder.entityHolder[id]?.let { cast<Device>(it) }?.description?.updateErrorCondition(errorCondition))
 
 }
