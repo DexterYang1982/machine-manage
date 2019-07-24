@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct
 
 
 @Service
-class Management : TextWebSocketHandler() {
+class MachineStructureData : TextWebSocketHandler() {
     @Autowired
     lateinit var bootService: BootService
     private val webClientSet = CopyOnWriteArraySet<WebSocketSession>()

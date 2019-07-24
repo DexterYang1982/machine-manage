@@ -1,7 +1,7 @@
 package net.gridtech.machine.manage.config
 
-import net.gridtech.machine.manage.controller.websocket.MachineRuntime
-import net.gridtech.machine.manage.controller.websocket.Management
+import net.gridtech.machine.manage.controller.websocket.MachineRuntimeData
+import net.gridtech.machine.manage.controller.websocket.MachineStructureData
 import net.gridtech.machine.manage.domain.DomainInfoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
@@ -20,15 +20,15 @@ import org.springframework.web.socket.server.HandshakeInterceptor
 @EnableWebSocket
 class WebSocketConfig : WebSocketConfigurer {
     @Autowired
-    lateinit var management: Management
+    lateinit var machineStructureData: MachineStructureData
     @Autowired
-    lateinit var machineRuntime: MachineRuntime
+    lateinit var machineRuntimeData: MachineRuntimeData
     @Autowired
     lateinit var domainInfo: DomainInfoService
 
 
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
-        registry.addHandler(machineRuntime, "/machineRuntime").setAllowedOrigins("*")
+        registry.addHandler(machineRuntimeData, "/machineRuntimeData").setAllowedOrigins("*")
                 .addInterceptors(object : HandshakeInterceptor {
                     override fun beforeHandshake(request: ServerHttpRequest, response: ServerHttpResponse, wsHandler: WebSocketHandler, attributes: MutableMap<String, Any>): Boolean {
                         val req = request as ServletServerHttpRequest
@@ -48,7 +48,7 @@ class WebSocketConfig : WebSocketConfigurer {
                     override fun afterHandshake(request: ServerHttpRequest, response: ServerHttpResponse, wsHandler: WebSocketHandler, exception: Exception?) {
                     }
                 })
-        registry.addHandler(management, "/management").setAllowedOrigins("*")
+        registry.addHandler(machineStructureData, "/machineStructureData").setAllowedOrigins("*")
                 .addInterceptors(object : HandshakeInterceptor {
                     override fun beforeHandshake(request: ServerHttpRequest, response: ServerHttpResponse, wsHandler: WebSocketHandler, attributes: MutableMap<String, Any>): Boolean {
                         val req = request as ServletServerHttpRequest
