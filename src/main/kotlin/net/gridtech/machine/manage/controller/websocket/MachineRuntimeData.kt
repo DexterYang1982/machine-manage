@@ -37,9 +37,12 @@ class MachineRuntimeData : TextWebSocketHandler() {
                                         .map { value ->
                                             RuntimeValue(
                                                     id = entityFieldValue.source?.id ?: "",
-                                                    nodeId = entity.id,
+                                                    entityId = entity.id,
+                                                    entityName = entity.name.value ?: "",
+                                                    dataName = entity.dataName(),
                                                     fieldId = entityField.id,
                                                     fieldKey = entityField.getFieldKey(),
+                                                    fieldName = entityField.name.value ?: "",
                                                     value = value?.let { stringfy(it) } ?: "",
                                                     session = entityFieldValue.session,
                                                     updateTime = entityFieldValue.updateTime
@@ -59,9 +62,12 @@ class MachineRuntimeData : TextWebSocketHandler() {
 
     data class RuntimeValue(
             val id: String,
-            val nodeId: String,
+            val entityId: String,
+            val entityName: String,
+            val dataName: String,
             val fieldId: String,
             val fieldKey: String,
+            val fieldName: String,
             val value: String,
             val session: String,
             val updateTime: Long
