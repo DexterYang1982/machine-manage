@@ -18,13 +18,23 @@ class RuntimeController {
     lateinit var bootService: BootService
 
     @RequestMapping(value = ["/ExecuteDeviceCommand"], method = [RequestMethod.POST])
-    fun addStatus(@RequestParam("deviceId")
-                  deviceId: String,
-                  @RequestParam("commandId")
-                  commandId: String,
-                  @RequestParam("valueDescriptionId")
-                  valueDescriptionId: String,
-                  @RequestParam("session")
-                  session: String): ResponseEntity<*> =
+    fun executeDeviceCommand(@RequestParam("deviceId")
+                             deviceId: String,
+                             @RequestParam("commandId")
+                             commandId: String,
+                             @RequestParam("valueDescriptionId")
+                             valueDescriptionId: String,
+                             @RequestParam("session")
+                             session: String): ResponseEntity<*> =
             result(bootService.dataHolder.entityHolder[deviceId]?.let { cast<Device>(it) }?.executeCommand(commandId, valueDescriptionId, session))
+
+
+    @RequestMapping(value = ["/ExecuteDeviceProcess"], method = [RequestMethod.POST])
+    fun executeDeviceProcess(@RequestParam("deviceId")
+                             deviceId: String,
+                             @RequestParam("processId")
+                             processId: String,
+                             @RequestParam("session")
+                             session: String): ResponseEntity<*> =
+            result(bootService.dataHolder.entityHolder[deviceId]?.let { cast<Device>(it) }?.executeProcess(processId, session))
 }
