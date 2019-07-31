@@ -34,13 +34,17 @@ class MachineStructureData : TextWebSocketHandler() {
 
     override fun afterConnectionEstablished(session: WebSocketSession) {
         webClientSet.add(session)
-        Observable.concat(
+        val existed = Observable.concat(
                 Observable.fromIterable(bootService.dataHolder.entityClassHolder.values),
                 Observable.fromIterable(bootService.dataHolder.entityFieldHolder.values),
                 Observable.fromIterable(bootService.dataHolder.entityHolder.values)
-        ).subscribe {
+        )
+
+        existed.subscribe({
             session.sendMessage(TextMessage(stringfy(it.capsule())))
-        }
+        }, {}, {
+            session.sendMessage(TextMessage("{}"))
+        })
     }
 
     override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
