@@ -7,16 +7,24 @@ import net.gridtech.machine.model.entity.Tunnel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(value = ["/api/Runtime"], produces = [MediaType.APPLICATION_JSON_VALUE])
 class RuntimeController {
     @Autowired
     lateinit var bootService: BootService
+
+    @RequestMapping(value = ["/updateEntityInput"], method = [RequestMethod.POST])
+    fun updateEntityInput(@RequestParam("entityId")
+                          entityId: String,
+                          @RequestParam("inputFieldId")
+                          inputFieldId: String,
+                          @RequestParam("session")
+                          session: String,
+                          @RequestBody
+                          value: String): ResponseEntity<*> =
+            result(bootService.dataHolder.entityHolder[entityId]?.getCustomFieldValue(inputFieldId)?.update(value, session))
 
     @RequestMapping(value = ["/executeDeviceCommand"], method = [RequestMethod.POST])
     fun executeDeviceCommand(@RequestParam("deviceId")

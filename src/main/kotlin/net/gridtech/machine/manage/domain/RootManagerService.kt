@@ -7,7 +7,11 @@ import net.gridtech.core.util.APIException
 import net.gridtech.core.util.APIExceptionEnum
 import net.gridtech.core.util.parse
 import net.gridtech.core.util.stringfy
-import okhttp3.*
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Service
 import java.net.URL
@@ -142,18 +146,20 @@ class RootManagerService : IManager {
 
     private fun httpPost(method: String, body: Any?, vararg queries: Pair<String, Any?>): String {
         val url = getHttpUrl(rootApiUrl, method, *queries)
+        val content = body?.let { if (it is String) it else stringfy(body) }
+                ?: "{}"
         val request = Request.Builder().url(url).header("nodeId", rootNodeId).header("nodeSecret", rootNodeSecret).post(
-                RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body?.let { if (it is String) it else stringfy(body) }
-                        ?: "{}")
+                content.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         ).build()
         return responseContent(request)
     }
 
     private fun httpPut(method: String, body: Any?, vararg queries: Pair<String, Any?>): String {
         val url = getHttpUrl(rootApiUrl, method, *queries)
+        val content = body?.let { stringfy(body) }
+                ?: "{}"
         val request = Request.Builder().url(url).header("nodeId", rootNodeId).header("nodeSecret", rootNodeSecret).put(
-                RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body?.let { stringfy(body) }
-                        ?: "{}")
+                content.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         ).build()
         return responseContent(request)
     }
@@ -171,7 +177,7 @@ class RootManagerService : IManager {
     }
 
     private fun getHttpUrl(rootApiUrl: String, method: String, vararg queries: Pair<String, Any?>): URL {
-        val builder = HttpUrl.parse(rootApiUrl)!!.newBuilder()
+        val builder = rootApiUrl.toHttpUrlOrNull()!!.newBuilder()
         builder.addPathSegment(method)
         queries.forEach { (key, values) ->
             values?.apply {
@@ -185,7 +191,7 @@ class RootManagerService : IManager {
                     builder.addQueryParameter(key, values.toString())
             }
         }
-        return builder.build().url()
+        return builder.build().toUrl()
     }
 
     private fun responseContent(request: Request): String {
@@ -193,8 +199,8 @@ class RootManagerService : IManager {
         val responseContent: String?
         try {
             val response = OkHttpClient().newCall(request).execute()
-            responseContent = response.body()?.string()
-            responseCode = response.code()
+            responseContent = response.body?.string()
+            responseCode = response.code
 
         } catch (e: Throwable) {
             System.err.println(e.message)
